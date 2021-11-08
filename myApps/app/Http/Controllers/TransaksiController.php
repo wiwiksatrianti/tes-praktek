@@ -15,7 +15,7 @@ class TransaksiController extends Controller
     public function index()
     {
         $transaksi = Transaksi::all();
-        return view ('tes_praktek.index', compact('transaksi'));
+        return view ('transaksi.index', compact('transaksi'));
     }
 
     /**
@@ -25,7 +25,8 @@ class TransaksiController extends Controller
      */
     public function create()
     {
-        //
+        $transaksi = Transaksi::all();
+        return view('transaksi.create', compact('transaksi'));
     }
 
     /**
@@ -36,7 +37,17 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'nama' => 'required',
+            'jumlah' => 'required|max:5'
+        ]);
+
+        Transaksi::create([
+            'nama' => $request->nama,
+            'jumlah' => $request->jumlah
+        ]);
+        
+        return redirect('transaksi/show');
     }
 
     /**
@@ -47,7 +58,8 @@ class TransaksiController extends Controller
      */
     public function show($id)
     {
-        //
+        $transaksi = Transaksi::all();
+        return view('transaksi.show', compact('transaksi'));
     }
 
     /**
@@ -81,6 +93,8 @@ class TransaksiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $transaksi = Transaksi::find($id);
+        $transaksi->delete();
+        return redirect('/transaksi');
     }
 }
